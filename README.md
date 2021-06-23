@@ -77,18 +77,8 @@ export default class About extends BaseForm {
 }
 
 1.3 Home.vue单元 如何展示控件以及控件传参
-    <div class="content">
-        <el-tabs id="homTable" v-model="FIndexName">
-          <el-tab-pane
-            v-for="item in tagsList"
-            :key="item.indexName"
-            :name="item.indexName"
-            :label="item.title"
-          >
-            <component :is="item.component" :indexTag="item"></component>  //重点此句，把页面标签传到控件属性 indexTag,达到传参的目标
-          </el-tab-pane>
-        </el-tabs>
-    </div>
+    <!-- <component :is="item.component" :indexTag="item"></component> -->
+    //重点此句，把页面标签传到控件属性 indexTag,达到传参的目标
 
 1.4 页面控件注册单元 zComRegister.ts
   当然也可以自已写函数扩展自动加载比如以什么开头的vue文件

@@ -39,6 +39,60 @@ vue-element-admin 官方文档：https://panjiachen.github.io/vue-element-admin-
 6.views 页面
     6.1 zComRegister.ts主界面控件展示的核心注册控件单元
     6.2 Home.vue 主界面 主要是布局的展示，以及页面当控件的展示区域
+##### 入门学习，程序基本流程，代码不复杂具体的就自已看源码了
+1.1 main.ts 加载
+  引入一些公共的包及一些控制 axios拦截，全局变量注册 多放在此单元,当然你们也可以自已规化
+1.2 App.vue 加载
+1.3 跟据vueRouter 加载默认启动路由
+1.4 加载Home主页
+
+##### 重点类介绍
+1.1 菜单和标题栏信息类
+export interface ITagItem {
+    indexName: string;  //索引值一般是唯一的，同个控件indexName不同就可以多开
+    component: string;  //挂载的组件
+    title: string;  //标题
+    icon: string; //图标
+    params: any; //参数
+    children: ITagItem[]; //子菜单
+}
+例增加个页面写法如下
+    let tempTag: ITagItem = {
+      indexName: "TDashboard",
+      component: "TDashboard",
+      title: "主页",
+      icon: "el-icon-s-home",
+      params: {},
+      children: [],
+    };
+    EvenBus.addTag(tempTag);
+
+1.2 页面获取自已的ITagItem信息,可以参考单元 About.vue
+//重点继承 BaseForm ，可以参考BaseForm写法
+export default class About extends BaseForm {
+  private tagInfo: string = "";
+  public created() {
+    this.tagInfo = JSON.stringify(this.$props.indexTag);
+  }
+}
+
+1.3 Home.vue单元 如何展示控件以及控件传参
+    <div class="content">
+        <el-tabs id="homTable" v-model="FIndexName">
+          <el-tab-pane
+            v-for="item in tagsList"
+            :key="item.indexName"
+            :name="item.indexName"
+            :label="item.title"
+          >
+            <component :is="item.component" :indexTag="item"></component>  //重点此句，把页面标签传到控件属性 indexTag,达到传参的目标
+          </el-tab-pane>
+        </el-tabs>
+    </div>
+
+1.4 页面控件注册单元 zComRegister.ts
+  当然也可以自已写函数扩展自动加载比如以什么开头的vue文件
+
 ##### 赞助作者
 ![微信收款码](https://github.com/flmbbb/OneEasyAdmin/blob/main/src/assets/img/%E5%BE%AE%E4%BF%A1%E6%94%B6%E6%AC%BE%E7%A0%81.png)
 ![支付宝收款码](https://github.com/flmbbb/OneEasyAdmin/blob/main/src/assets/img/%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%B6%E6%AC%BE%E7%A0%81.png)

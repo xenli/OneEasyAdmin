@@ -15,7 +15,8 @@ npm run build
 ```
 
 #### 欢迎使用VUE3.0 + ElementPlus + typescript 后台管理模板
-项目Github地址:
+项目Github地址:https://github.com/flmbbb/OneEasyAdmin
+国内项目Github地址:https://gitee.com/fan-lianman/OneEasyAdmin
 UI库文档： https://element-plus.gitee.io/#/zh-CN
 vue-element-admin 官方文档：https://panjiachen.github.io/vue-element-admin-site/zh/guide/
 ##### 在线预览地址：http://edu.callbaba.cn:8000/myweb/easyadmin/index.html

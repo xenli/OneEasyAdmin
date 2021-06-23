@@ -48,6 +48,7 @@ vue-element-admin 官方文档：https://panjiachen.github.io/vue-element-admin-
 
 ##### 重点类介绍
 1.1 菜单和标题栏信息类
+```
 export interface ITagItem {
     indexName: string;  //索引值一般是唯一的，同个控件indexName不同就可以多开
     component: string;  //挂载的组件
@@ -56,7 +57,9 @@ export interface ITagItem {
     params: any; //参数
     children: ITagItem[]; //子菜单
 }
+```
 例增加个页面写法如下
+```
     let tempTag: ITagItem = {
       indexName: "TDashboard",
       component: "TDashboard",
@@ -66,19 +69,37 @@ export interface ITagItem {
       children: [],
     };
     EvenBus.addTag(tempTag);
-
+```
 1.2 页面获取自已的ITagItem信息,可以参考单元 About.vue
 //重点继承 BaseForm ，可以参考BaseForm写法
+```
 export default class About extends BaseForm {
   private tagInfo: string = "";
   public created() {
     this.tagInfo = JSON.stringify(this.$props.indexTag);
   }
 }
-
+```
 1.3 Home.vue单元 如何展示控件以及控件传参
-    <!-- <component :is="item.component" :indexTag="item"></component> -->
-    //重点此句，把页面标签传到控件属性 indexTag,达到传参的目标
+```
+<div class="content">
+        <el-tabs id="homTable" v-model="FIndexName">
+          <el-tab-pane
+            v-for="item in tagsList"
+            :key="item.indexName"
+            :name="item.indexName"
+            :label="item.title"
+          >
+            <component :is="item.component" :indexTag="item"></component>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+    
+```
+重点此句，把页面标签传到控件属性 indexTag,达到传参的目标
+```
+<component :is="item.component" :indexTag="item"></component>
+```
 
 1.4 页面控件注册单元 zComRegister.ts
   当然也可以自已写函数扩展自动加载比如以什么开头的vue文件

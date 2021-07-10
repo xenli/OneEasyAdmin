@@ -129,7 +129,7 @@ export class THTTPClient {
             //成功执行的事件
             function (response) {
                 if (qRequest.onSuccess != null) {
-                    if (qRequest.isResult) {
+                    if (qRequest.isResult && response.data.resultCode) {
                         let lResult = TResult.createNew();
                         lResult.resultCode = response.data.resultCode;
                         lResult.resultMsg = response.data.resultMsg;
@@ -176,7 +176,7 @@ export class THTTPClient {
                 data: qRequest.data
             });
             if (response.status == 200) {
-                if (qRequest.isResult) {
+                if (qRequest.isResult && response.data.resultCode) {
                     lResult.resultCode = response.data.resultCode;
                     lResult.resultMsg = response.data.resultMsg;
                     lResult.resultFormat = response.data.resultFormat;

@@ -36,14 +36,13 @@ export class TElmMsgHelper {
   public static loadingInstance: ILoadingInstance;
   public static msgLoading(qMsg: string = "") {
     if (qMsg.length == 0) {
-      qMsg = "加载中请稍候";
+      qMsg = "加载中请稍候...";
     }
-    TElmMsgHelper.loadingInstance = ElLoading.service({ fullscreen: false, text: qMsg, background: 'rgba(0, 0, 0, 0.7)' });
+    //需要注意的是，以服务的方式调用的全屏( fullscreen: true) Loading 是单例的否则每一个弹窗多是独立的实例
+    TElmMsgHelper.loadingInstance = ElLoading.service({ fullscreen: true, text: qMsg, background: 'rgba(0, 0, 0, 0.7)' });
   }
   public static msgLoadingClose() {
-    if (TElmMsgHelper.loadingInstance != undefined) {
-      TElmMsgHelper.loadingInstance.close();
-    }
+    TElmMsgHelper.loadingInstance.close();
   }
 }
 export default (app: any) => {

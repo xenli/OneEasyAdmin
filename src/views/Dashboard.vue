@@ -63,7 +63,7 @@ import { Options, prop, Vue } from "vue-class-component";
   data() {
     return {
       imgWX: require("@/assets/img/微信收款码.png"),
-      imgZFB: require("@/assets/img/支付宝收款码.png"),
+      imgZFB: require("@/assets/img/QQ.png"),
     };
   },
 })

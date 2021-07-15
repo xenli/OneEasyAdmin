@@ -5,7 +5,7 @@
   </div>
 </template>
 <script  lang="ts">
-import { defaultTag, ITagItem } from "@/store";
+import { defaultTag, IMenuItem } from "@/store";
 import { Options, Vue } from "vue-class-component";
 import BaseForm from "./BaseForm";
 //配合着用
@@ -16,7 +16,7 @@ import BaseForm from "./BaseForm";
 export default class About extends BaseForm {
   private tagInfo: string = "";
   public created() {
-    this.tagInfo = JSON.stringify(this.$props.indexTag);
+    this.tagInfo = JSON.stringify(this.zIndexTag);
   }
 }
 </script>

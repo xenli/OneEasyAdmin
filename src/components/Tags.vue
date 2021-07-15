@@ -5,10 +5,10 @@
         class="tags-li"
         v-for="item in tagsList"
         :class="{ active: isActive(item) }"
-        :key="item.indexName"
+        :key="item.menuIndexName"
         @click="changeTag(item)"
       >
-        <span class="tags-li-title">{{ item.title }}</span>
+        <span class="tags-li-title">{{ item.menuTitle }}</span>
         <span class="tags-li-icon" @click="closeTag(item)">
           <i class="el-icon-close"></i>
         </span>
@@ -33,31 +33,31 @@
 
 <script  lang="ts">
 import { Options, Vue } from "vue-class-component";
-import store, { ITagItem } from "@/store";
+import store, { IMenuItem } from "@/store";
 //配合着用
 @Options({
   computed: {},
   methods: {},
 })
 export default class Tags extends Vue {
-  private FIndexTagItem: ITagItem | undefined;
-  private tagsList: ITagItem[] = [];
+  private FIndexTagItem: IMenuItem | undefined;
+  private tagsList: IMenuItem[] = [];
   public created() {
     this.$myEvenBus._instance.on("changeTag", (qItem) => {
-      this.FIndexTagItem = qItem as ITagItem;
+      this.FIndexTagItem = qItem as IMenuItem;
       this.tagsList = store.state.tagsList.itemTags;
     });
   }
-  private isActive(qItem: ITagItem): boolean {
+  private isActive(qItem: IMenuItem): boolean {
     if (this.FIndexTagItem == undefined) {
       return false;
     }
-    return this.FIndexTagItem.indexName == qItem.indexName;
+    return this.FIndexTagItem.menuIndexName == qItem.menuIndexName;
   }
-  private changeTag(qItem: ITagItem) {
+  private changeTag(qItem: IMenuItem) {
     this.$myEvenBus.chageTag(qItem);
   }
-  private closeTag(qItem: ITagItem) {
+  private closeTag(qItem: IMenuItem) {
     this.$myEvenBus.closeTag(qItem);
     //阻断上层控件click事件
     this.cancelBubble(window.event);
@@ -90,7 +90,7 @@ export default class Tags extends Vue {
   overflow: hidden;
   background: #fff;
   padding-right: 120px;
-  box-shadow: 0 5px 10px #ddd;
+  box-shadow: 0 2px 2px #ddd;
 }
 
 .tags ul {
@@ -128,7 +128,7 @@ export default class Tags extends Vue {
 
 .tags-li-title {
   float: left;
-  max-width: 80px;
+  max-width: 120px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

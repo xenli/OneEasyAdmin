@@ -1,12 +1,20 @@
-import { ITagItem } from "@/store";
+import { IMenuItem } from "@/store";
 import { Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
-//如果要获取菜单传进来的参数,继承此类
-//在展示控件时，会把 ITagItem信息放到 indexTag参数
-export default class BaseForm extends Vue {
+export default class TFormBase extends Vue {
+    //@Ref 不可有v-if模块 refs写
+    // declare $refs: {
+    //     FrmDataList: TFrmModuleDataList;
+    //   };
     //props写法
-    @Prop() indexTag?: ITagItem;
-    declare $props: {
-        indexTag: ITagItem;
-    };
+    @Prop() zIndexTag?: IMenuItem;  //列标签数据
+    @Prop() zContextParams: any;   //上文窗体传过来的参数,比如列表编辑打开明细,传参用的
+    @Prop() zContextOnCall: any;  //回调上文窗体事件
+    // declare $props: {
+    //     indexTag: IMenuItem;
+    // };
+    //数据打开成功标识,自已的单元自已把控
+    public zIsOpenData: boolean = false;
+    public zCurrID: string = ""; //一般存放主键值
+    //
 }

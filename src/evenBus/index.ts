@@ -1,34 +1,34 @@
 import mitt from 'mitt'
-import store, { ITagItem, defaultTag } from "@/store";
+import store, { IMenuItem, defaultTag } from "@/store";
 
 export default class EvenBus {
     public static _instance = mitt();
-    public static addTag(qTagItem: ITagItem) {
-        if (qTagItem.component.length <= 0) {
+    public static addTag(qMenuItem: IMenuItem) {
+        if (qMenuItem.menuComponent.length <= 0) {
             //菜单展开不处理事件
             return;
         }
         store.state.tagsList.itemTags.find
         let temp = store.state.tagsList.itemTags.find((vale) => {
-            return vale.indexName == qTagItem.indexName;
+            return vale.menuIndexName == qMenuItem.menuIndexName;
         });
         if (!temp) {
             //增加
-            store.state.tagsList.itemTags.push(qTagItem);
+            store.state.tagsList.itemTags.push(qMenuItem);
         }
-        EvenBus._instance.emit("changeTag", qTagItem);
+        EvenBus._instance.emit("changeTag", qMenuItem);
     }
-    public static chageTag(qTagItem: ITagItem) {
-        EvenBus._instance.emit("changeTag", qTagItem);
-        store.state.indexTag = qTagItem;
+    public static chageTag(qMenuItem: IMenuItem) {
+        EvenBus._instance.emit("changeTag", qMenuItem);
+        store.state.indexTag = qMenuItem;
     }
     public static defalutTag() {
         EvenBus.chageTag(defaultTag);
     }
-    public static closeTag(qTagItem: ITagItem) {
+    public static closeTag(qMenuItem: IMenuItem) {
         store.state.tagsList.itemTags.find
         let temp = store.state.tagsList.itemTags.findIndex((vale) => {
-            return vale.indexName == qTagItem.indexName;
+            return vale.menuIndexName == qMenuItem.menuIndexName;
         });
         if (temp >= 0) {
             store.state.tagsList.itemTags.splice(temp, 1);
@@ -56,15 +56,15 @@ export default class EvenBus {
             return;
         }
     }
-    public static closeOtherTag(qTagItem: ITagItem) {
+    public static closeOtherTag(qMenuItem: IMenuItem) {
         if (store.state.tagsList.itemTags.length <= 1) {
             return;
         }
         //关闭其它,除了自已
         const curItem = store.state.tagsList.itemTags.filter(item => {
-            return item.indexName == qTagItem.indexName;
+            return item.menuIndexName == qMenuItem.menuIndexName;
         });
         store.state.tagsList.itemTags = curItem;
-        EvenBus.chageTag(qTagItem);
+        EvenBus.chageTag(qMenuItem);
     }
 }

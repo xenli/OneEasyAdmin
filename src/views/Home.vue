@@ -9,11 +9,11 @@
         <el-tabs id="homTable" v-model="FIndexName">
           <el-tab-pane
             v-for="item in tagsList"
-            :key="item.indexName"
-            :name="item.indexName"
-            :label="item.title"
+            :key="item.menuIndexName"
+            :name="item.menuIndexName"
+            :label="item.menuTitle"
           >
-            <component :is="item.component" :indexTag="item"></component>
+            <component :is="item.menuComponent" :zIndexTag="item"></component>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -22,7 +22,7 @@
 </template>
 <script  lang="ts">
 import { Options, Vue } from "vue-class-component";
-import store, { defaultTag, ITagItem } from "@/store";
+import store, { defaultTag, IMenuItem } from "@/store";
 import vHeader from "../components/Header";
 import vSidebar from "../components/Sidebar";
 import vTags from "../components/Tags.vue";
@@ -39,27 +39,28 @@ import EvenBus from "@/evenBus";
 })
 export default class Home extends Vue {
   public FIndexName: string = "";
-  private get tagsList(): ITagItem[] {
+  private get tagsList(): IMenuItem[] {
+   
     return store.state.tagsList.itemTags;
   }
   public created() {
     this.$myEvenBus._instance.on("changeTag", (qItem) => {
-      this.FIndexName = (qItem as ITagItem).indexName;
+      this.FIndexName = (qItem as IMenuItem).menuIndexName;
     });
   }
-  private changeIndexName(qTagItem: ITagItem) {}
+  private changemenuIndexName(qTagItem: IMenuItem) {}
   private get collapse(): boolean {
     return store.state.collapse;
   }
   public mounted() {
     //打开默认菜单测试
-    let tempTag: ITagItem = {
-      indexName: "TDashboard",
-      component: "TDashboard",
-      title: "主页",
-      icon: "el-icon-s-home",
-      params: {},
-      children: [],
+    let tempTag: IMenuItem = {
+      menuIndexName: "TDashboard",
+      menuComponent: "TDashboard",
+      menuTitle: "主页",
+      menuIcon: "el-icon-s-home",
+      menuParams: {},
+      menuChildren: [],
     };
     EvenBus.addTag(tempTag);
   }

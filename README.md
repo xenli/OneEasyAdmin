@@ -36,7 +36,7 @@ vue-element-admin 官方文档：https://panjiachen.github.io/vue-element-admin-
     重点充分利用好路由【前置守卫】,可以很好达到界面权限控制,但本平台采用的是tablePanle当容器放component，
     基本没路由说法，只需要在打开菜单公共事件控件权限即可，如需要路由版的，后面我在开源个版。
 5.store 存储,没什么好说的，这些是搞VUE必备的知识
-    5.1 ITagItem主要说下这个，菜单还有标题基类  
+    5.1 IMenuItem主要说下这个，菜单还有标题基类  
 6.views 页面
     6.1 zComRegister.ts主界面控件展示的核心注册控件单元
     6.2 Home.vue 主界面 主要是布局的展示，以及页面当控件的展示区域
@@ -50,28 +50,28 @@ vue-element-admin 官方文档：https://panjiachen.github.io/vue-element-admin-
 ##### 重点类介绍
 1.1 菜单和标题栏信息类
 ```
-export interface ITagItem {
-    indexName: string;  //索引值一般是唯一的，同个控件indexName不同就可以多开
-    component: string;  //挂载的组件
-    title: string;  //标题
-    icon: string; //图标
-    params: any; //参数
-    children: ITagItem[]; //子菜单
+export interface IMenuItem {
+    menuIndexName: string;  //索引值一般是唯一的，同个控件menuIndexName不同就可以多开
+    menuComponent: string;  //挂载的组件
+    menuTitle: string;  //标题
+    menuIcon: string; //图标
+    menuParams: any; //参数
+    menuChildren: IMenuItem[]; //子菜单
 }
 ```
 例增加个页面写法如下
 ```
-    let tempTag: ITagItem = {
-      indexName: "TDashboard",
-      component: "TDashboard",
-      title: "主页",
-      icon: "el-icon-s-home",
-      params: {},
-      children: [],
+    let tempTag: IMenuItem = {
+      menuIndexName: "TDashboard",
+      menuComponent: "TDashboard",
+      menuTitle: "主页",
+      menuIcon: "el-icon-s-home",
+      menuParams: {},
+      menuChildren: [],
     };
     EvenBus.addTag(tempTag);
 ```
-1.2 页面获取自已的ITagItem信息,可以参考单元 About.vue
+1.2 页面获取自已的IMenuItem信息,可以参考单元 About.vue
 //重点继承 BaseForm ，可以参考BaseForm写法
 ```
 export default class About extends BaseForm {
@@ -87,11 +87,11 @@ export default class About extends BaseForm {
         <el-tabs id="homTable" v-model="FIndexName">
           <el-tab-pane
             v-for="item in tagsList"
-            :key="item.indexName"
-            :name="item.indexName"
-            :label="item.title"
+            :key="item.menuIndexName"
+            :name="item.menuIndexName"
+            :label="item.menuTitle"
           >
-            <component :is="item.component" :indexTag="item"></component>
+            <component :is="item.menuComponent" :zIndexTag="item"></component>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -99,7 +99,7 @@ export default class About extends BaseForm {
 ```
 重点此句，把页面标签传到控件属性 indexTag,达到传参的目标
 ```
-<component :is="item.component" :indexTag="item"></component>
+<component :is="item.menuComponent" :zIndexTag="item"></component>
 ```
 
 1.4 页面控件注册单元 zComRegister.ts

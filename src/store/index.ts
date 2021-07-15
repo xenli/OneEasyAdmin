@@ -1,56 +1,56 @@
 import { createStore } from 'vuex'
 
-export interface ITagItem {
-    indexName: string;  //索引值一般是唯一的，同个控件indexName不同就可以多开
-    component: string;  //挂载的组件
-    title: string;  //标题
-    icon: string; //图标
-    params: any; //参数
-    children: ITagItem[]; //子菜单
+export interface IMenuItem {
+    menuIndexName: string;  //索引值一般是唯一的，同个控件menuIndexName不同就可以多开
+    menuComponent: string;  //挂载的组件
+    menuTitle: string;  //标题
+    menuIcon: string; //图标
+    menuParams: any; //参数
+    menuChildren: IMenuItem[]; //子菜单
 }
+export const defaultTag: IMenuItem = {
+    menuIndexName: "-1", //索引值一般是唯一的
+    menuComponent: '',  //挂载的组件
+    menuTitle: '',  //标题
+    menuIcon: '',//图标
+    menuParams: {},//参数
+    menuChildren: []
+};
 //菜单
-export const defaultMenu: ITagItem[] = [
+export const defaultMenu: IMenuItem[] = [
     {
-        indexName: "TDashboard",
-        component: "TDashboard",
-        title: "主页",
-        icon: "el-icon-s-home",
-        params: {},
-        children: [],
+        menuIndexName: "TDashboard",
+        menuComponent: "TDashboard",
+        menuTitle: "主页",
+        menuIcon: "el-icon-s-home",
+        menuParams: {},
+        menuChildren: [],
     },
     {
-        indexName: "TDashboard2",
-        component: "TDashboard",
-        title: "主页2-多开测试",
-        icon: "el-icon-s-home",
-        params: {},
-        children: [],
+        menuIndexName: "TDashboard2",
+        menuComponent: "TDashboard",
+        menuTitle: "主页2-多开测试",
+        menuIcon: "el-icon-s-home",
+        menuParams: {},
+        menuChildren: [],
     },
     {
-        indexName: "TAbout",
-        component: "TAbout",
-        title: "关于",
-        icon: "el-icon-s-home",
-        params: { "参数1": "值1" },
-        children: [],
+        menuIndexName: "TAbout",
+        menuComponent: "TAbout",
+        menuTitle: "关于",
+        menuIcon: "el-icon-s-home",
+        menuParams: { "参数1": "值1" },
+        menuChildren: [],
     },
 ];
 
-export const defaultTag: ITagItem = {
-    indexName: "-1", //索引值一般是唯一的
-    component: '',  //挂载的组件
-    title: '',  //标题
-    icon: '',//图标
-    params: {},//参数
-    children: []
-};
 
-export class TTagList {
-    itemTags: ITagItem[] = [];
+export class TMenuList {
+    itemTags: IMenuItem[] = [];
 }
 export default createStore({
     state: {
-        tagsList: new TTagList(),
+        tagsList: new TMenuList(),
         menuList: defaultMenu,
         indexTag: defaultTag,
         collapse: false,

@@ -57,11 +57,15 @@ import store from "@/store";
   data() {
     return {
       fullscreen: false,
-      name: "linxin",
+      name: "叫兽叔叔",
       message: 2,
     };
   },
   computed: {
+    username() {
+      let username = localStorage.getItem("ms_username");
+      return username ? username : this.name;
+    },
     collapse() {
       return this.$store.state.collapse;
     },
@@ -74,7 +78,6 @@ import store from "@/store";
   },
 })
 export default class Header extends Vue {
-  private username:string="叫兽叔叔";
   public created() {}
 
   public handleCommand(command: string) {
@@ -117,7 +120,7 @@ export default class Header extends Vue {
 }
 .header-user-con {
   display: flex;
-  height: 70px;
+  height: 50px;
   align-items: center;
 }
 .btn-fullscreen {

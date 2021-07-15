@@ -23,22 +23,21 @@ a {
 
 .content-box {
     position: absolute;
-    left: 250px;
+    left: 210px;
     right: 0;
     top: 0;
     bottom: 0;
-    padding-bottom: 30px;
     -webkit-transition: left .3s ease-in-out;
     transition: left .3s ease-in-out;
-    background: #f0f0f0;
+    background:white;
 }
 
 .content {
     width: auto;
     height: 100%;
     padding: 10px;
-    overflow-y: scroll;
-    box-sizing: border-box;
+    overflow-y: auto;
+    background:white;
 }
 
 .content-collapse {

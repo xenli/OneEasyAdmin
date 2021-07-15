@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-bottom: 50px">
+  <div style="margin-bottom: 100px">
     <div style="color: red; text-align: center; width: 100%">
       <h1>平台开源介绍说明</h1>
     </div>

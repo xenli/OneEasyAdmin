@@ -18,7 +18,7 @@ import EvenBus from '@/evenBus/index'
 import installElementPlus, { TElmMsgHelper } from './plugins/element'
 import './assets/css/icon.css'
 import comRegister from "@/views/zComRegister";
-
+import elemDialogDrag from "./plugins/elemDialogDrag"
 
 //*********************axios拦截***************/
 
@@ -81,20 +81,32 @@ async function getMyConfig(): Promise<boolean> {
     }
     TGlobal.apiBaseUrl = lResult.resultData.apiBaseUrl;
     TGlobal.appTitle = lResult.resultData.appTitle;
+    TGlobal.appCaptoin = lResult.resultData.appCaption;
     return true;
 }
-if (getMyConfig()) {
-    const app = createApp(App)
-    installElementPlus(app)
-    app.use(store)
-    app.use(router)
-    app.config.globalProperties.$myHTTPRequest = THTTPRequest;
-    app.config.globalProperties.$myHTTPCleint = THTTPClient;
-    app.config.globalProperties.$myGlobal = TGlobal;
-    app.config.globalProperties.$myStrHelper = TStringHelper;
-    app.config.globalProperties.$myBaseAPI = TBaseAPI;
-    app.config.globalProperties.$myEvenBus = EvenBus;
-    app.config.globalProperties.$myMsgHelp = TElmMsgHelper;
-    comRegister(app);
-    app.mount('#app')
+
+
+async function startApp() {
+    var lOK = await getMyConfig()
+    if (lOK) {
+        //禁用前进后退 配合router也要
+        window.addEventListener('popstate', function () {
+            history.pushState(null, "", document.URL)
+        })
+        const app = createApp(App)
+        installElementPlus(app)
+        app.use(store)
+        app.use(router)
+        app.use(elemDialogDrag)
+        app.config.globalProperties.$myHTTPRequest = THTTPRequest;
+        app.config.globalProperties.$myHTTPCleint = THTTPClient;
+        app.config.globalProperties.$myGlobal = TGlobal;
+        app.config.globalProperties.$myStrHelper = TStringHelper;
+        app.config.globalProperties.$myBaseAPI = TBaseAPI;
+        app.config.globalProperties.$myEvenBus = EvenBus;
+        app.config.globalProperties.$myMsgHelp = TElmMsgHelper;
+        comRegister(app);
+        app.mount('#app')
+    }
 }
+startApp();

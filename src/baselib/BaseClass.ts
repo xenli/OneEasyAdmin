@@ -27,7 +27,126 @@ export class TFastApiRequest {
     }
 }
 
+export interface IResult<T> {
+    resultSuccess: boolean;
+    resultCode: string;
+    resultMsg: string;
+    resultData: T;
+    resultFormat: string;
+}
 
+//结果集
+export class TResult {
+    public resultSuccess: boolean = false;
+    public resultCode: string = "";
+    public resultMsg: string = "";
+    public resultData: any = null;
+    public resultFormat: string = "json"; //string(字符串),jsonstring(JSON格式字符串),json(json);
+    static createNew(): TResult {
+        return new TResult();
+    }
+    public getDataInfo(qDataName: string = "data1"): TDataInfo {
+        let lDataInfo = new TDataInfo();
+        let tempInfo;
+        let lKeys = [];
+        for (var key in this.resultData) {
+            lKeys.push(key);//Type, Height
+        }
+        if (lKeys.length == 1) {
+            tempInfo = this.resultData[lKeys[0]];
+        } else {
+            tempInfo = this.resultData[qDataName];
+        }
+        lDataInfo.iTotal = tempInfo.iTotal;
+        lDataInfo.iData = tempInfo.iData;
+        lDataInfo.iPageIndex = tempInfo.iPageIndex;
+        lDataInfo.iPageSize = tempInfo.iPageSize;
+        lDataInfo.iRow = tempInfo.iRow;
+        lDataInfo.datas = tempInfo.datas;
+        return lDataInfo;
+    }
+    public getData(qDataName: string = "data1"): any {
+        let lDataInfo = new TDataInfo();
+        let tempInfo;
+        let lKeys = [];
+        for (var key in this.resultData) {
+            lKeys.push(key);//Type, Height
+        }
+        if (lKeys.length == 1) {
+            tempInfo = this.resultData[lKeys[0]];
+        } else {
+            tempInfo = this.resultData[qDataName];
+        }
+        return tempInfo["datas"];
+    }
+    public getDataIndex(qIndex: number = 0): any {
+        if (qIndex < 0) {
+            qIndex = 0;
+        }
+        let lDataInfo = new TDataInfo();
+        let tempInfo;
+        let lKeys = [];
+        for (var key in this.resultData) {
+            lKeys.push(key);//Type, Height
+        }
+        if (lKeys.length < qIndex + 1) {
+            throw "数据集总共:" + lKeys.length;
+            return;
+        }
+        tempInfo = this.resultData[lKeys[qIndex]];
+        return tempInfo["datas"];
+    }
+    public getFirstRow(qIndex: number = 0): any {
+        let tempInfo;
+        let lKeys = [];
+        for (var key in this.resultData) {
+            lKeys.push(key);//Type, Height
+        }
+        if (lKeys.length == 0) {
+            throw "返回数据为空"
+            return;
+        }
+        tempInfo = this.resultData[lKeys[qIndex]];
+        let lFirst = tempInfo["datas"];
+        return lFirst[0];
+    }
+    public getFirstValue(): any {
+        let tempInfo;
+        let lKeys = [];
+        for (var key in this.resultData) {
+            lKeys.push(key);//Type, Height
+        }
+        if (lKeys.length == 0) {
+            throw "返回数据为空"
+            return;
+        }
+        tempInfo = this.resultData[lKeys[0]];
+        let lFirst = tempInfo["datas"];
+        lFirst = lFirst[0];
+        let lFirstKey = "";
+        for (var key in lFirst) {
+            return lFirst[key];
+        }
+    }
+    //上传文件返回来的文件信息
+    public getFileReturn(qIndex: number = 0): TFileReturn {
+        if (qIndex < 0) {
+            qIndex = 0;
+        }
+        let lFileReturn: TFileReturn;
+        let lResultArry = this.resultData as [];
+        if (lResultArry.length >= qIndex) {
+            lFileReturn = lResultArry[qIndex];
+            return lFileReturn;
+        } else {
+            return new TFileReturn();
+        }
+    }
+    //
+    public getDataT<T>(): IResult<T> {
+        return this as IResult<T>;
+    }
+}
 
 //
 export class TBaseUser {
@@ -223,106 +342,105 @@ export const constHelper = {
 
 }
 
-//
-
+//*********模板信息**********//
 export class TModuleField {
-    public fFieldID: string = "";
-    public fDataID: string = "";
-    public fModuleID: string = "";
-    public fOrderNo: number = 0;
-    public fFieldName: string = "";
-    public fFieldJsonName: string = "";
-    public fFieldCaption: string = "";
-    public fFieldDataType: string = "字符串";
-    public fFieldSiz: number = 0;
-    public fFieldPrecision: number = 0;
-    public fFieldProvidFlag: string = "";
-    public fFieldDefaultType: string = "";
-    public fFieldDefaultValue: string = "";
-    public fFieldFormat: string = "";
-    public fFieldNullValue: string = "";
+    public FFieldID: string = "";
+    public FDataID: string = "";
+    public FModuleID: string = "";
+    public FOrderNo: number = 0;
+    public FFieldName: string = "";
+    public FFieldJsonName: string = "";
+    public FFieldCaption: string = "";
+    public FFieldDataType: string = "字符串";
+    public FFieldSiz: number = 0;
+    public FFieldPrecision: number = 0;
+    public FFieldProvidFlag: string = "";
+    public FFieldDefaultType: string = "";
+    public FFieldDefaultValue: string = "";
+    public FFieldFormat: string = "";
+    public FFieldNullValue: string = "";
     public myTempID: string = "";
 }
 
 export class TModuleFilter {
     public FFilterID: string = "";
-    public fDataID: string = "";
-    public fModuleID: string = "";
-    public fOrderNo: number = 1;
-    public fFilterName: string = "";
-    public fFilterJsonName: string = "";
-    public fFilterCaption = "新建条件";
-    public fFilterField: string = "";
-    public fFilterDataType = "字符串";
-    public fFilterExpression = "=";
-    public fFilterFormat: string = "";
-    public fFilterbMust: boolean = false;
-    public fFilterbValue: boolean = false;
-    public fFilterDefaultType: string = "";
-    public fFilterDefaultValue: string = "";
-    public fFilterSQL = "";
-    public fbOutParam: boolean = false;
-    public fOutTrueValue: string = "";
-    public fIsOutMsg: boolean = false;
+    public FDataID: string = "";
+    public FModuleID: string = "";
+    public FOrderNo: number = 1;
+    public FFilterName: string = "";
+    public FFilterJsonName: string = "";
+    public FFilterCaption = "新建条件";
+    public FFilterField: string = "";
+    public FFilterDataType = "字符串";
+    public FFilterExpression = "=";
+    public FFilterFormat: string = "";
+    public FFilterbMust: boolean = false;
+    public FFilterbValue: boolean = false;
+    public FFilterDefaultType: string = "";
+    public FFilterDefaultValue: string = "";
+    public FFilterSQL = "";
+    public FbOutParam: boolean = false;
+    public FOutTrueValue: string = "";
+    public FIsOutMsg: boolean = false;
     public myTempID = "";
 }
 
 export class TModuleDataSet {
-    public fDataID: string = "";
-    public fModuleID: string = "";
-    public fOrderNo: number = 1;
-    public fDataName: string = "";
-    public fDataCaption = "新建数据";
-    public fDataZTCode: string = "";
-    public fDataSQL: string = "";
-    public fDataOpenMode = "openData";
-    public fDataTableName: string = "";
-    public fDataPrimaryKey: string = "";
-    public fDataPageSize: number = 0;
-    public fDataJsonFormat: string = "";
-    public fMaxAffectRows: number = 0;
-    public fMustAffectRows: number = 0;
+    public FDataID: string = "";
+    public FModuleID: string = "";
+    public FOrderNo: number = 1;
+    public FDataName: string = "";
+    public FDataCaption = "新建数据";
+    public FDataZTCode: string = "";
+    public FDataSQL: string = "";
+    public FDataOpenMode = "openData";
+    public FDataTableName: string = "";
+    public FDataPrimaryKey: string = "";
+    public FDataPageSize: number = 0;
+    public FDataJsonFormat: string = "";
+    public FMaxAffectRows: number = 0;
+    public FMustAffectRows: number = 0;
     public fieldList: TModuleField[] = [];
     public filterList: TModuleFilter[] = []
     public myTempID = "";
 };
 
-
 export class TModuleFileSet {
-    public fSetID: string = "";
-    public fOrderNo: number = 0;
-    public fFielCode: string = "";
-    public fPhysicalPath: string = "";
-    public fIsWeb = true;
-    public fIsUse = true;
-    public fAutoYMDRoot = "YMD";
-    public fIsDefault: boolean = false;
-    public fDBCode: string = "";
-    public fTableName: string = "";
-    public fFileIDField: string = "";
-    public fFileNameField: string = "";
-    public fFileTypeField: string = "";
-    public fFileSizeField: string = "";
-    public fFilePathField: string = "";
-    public fFileTimeField: string = "";
-    public fJobField: string = "";
-    public fDetailField: string = "";
-    public fRemark: string = "";
+    public FSetID: string = "";
+    public FOrderNo: number = 0;
+    public FFielCode: string = "";
+    public FPhysicalPath: string = "";
+    public FIsWeb = true;
+    public FIsUse = true;
+    public FAutoYMDRoot = "YMD";
+    public FIsDefault: boolean = false;
+    public FDBCode: string = "";
+    public FTableName: string = "";
+    public FFileIDField: string = "";
+    public FFileNameField: string = "";
+    public FFileTypeField: string = "";
+    public FFileSizeField: string = "";
+    public FFilePathField: string = "";
+    public FFileTimeField: string = "";
+    public FJobField: string = "";
+    public FDetailField: string = "";
+    public FRemark: string = "";
 }
-
 export class TModuleBase {
-    public fModuleID: string = "";
-    public fpModuleID: string = "";
-    public fTreeCode: string = "";
-    public fModuleCode = "接口代码";
-    public fModuleCaptoin: string = "";
-    public fModuleAuthor: string = "";
-    public fbUse = true;
+    public FModuleID: string = "";
+    public FPModuleID: string = "";
+    public FTreeCode: string = "";
+    public FModuleCode = "接口代码";
+    public FModuleCaptoin: string = "";
+    public FModuleAuthor: string = "";
+    public FbUse = true;
 };
 export class TModuelInfo {
-    public moduleBase: TModuleBase=new TModuleBase();
+    public moduleBase: TModuleBase = new TModuleBase();
     public moduleDataList: TModuleDataSet[] = [];
+    public delIDs: string[] = [];
 }
+//*********数据库或账套信息 *************/
 export class TDBInfo {
     public dbCode: string = "新建代码"; //数据库代码 必需，每个连接一个代码且不能重复 全小写
     public dbType: string = "sqlserver"; //数据库类型 sqlserver|mysql|sqlite|oracle|postgresql  必需
@@ -339,11 +457,19 @@ export class TZTInfo {
     public slaveDBCodeList: string[] = [];//从数据库["mssql1";"mssql2";"mssql3"] 这样。
     public tempID = ""
 }
-
+export class TDBHelper {
+    public dbList: TDBInfo[] = [];
+    public ztList: TZTInfo[] = [];
+    public mainZTCode: string = "";
+    public adminZTCode: string = "";
+}
+//
 export class TLogSet {
     public logHTTP: string = "0"; //是否记录HTTP日记
     public logSQL: string = "0"; //是否记录SQL日记
     public logToDB: string = "0"; //是否把日记写到SQL
     public logDBCode: string = ""; //日记账套
 }
-
+//函数类型定义
+export type evenDataSetIndexChange = (qDataSet: TModuleDataSet) => void; //事件回调
+export type evenDels = (qID: string) => void; //事件回调

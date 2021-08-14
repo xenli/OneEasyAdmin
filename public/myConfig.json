@@ -1,4 +1,5 @@
 {
-	"appTitle": "管理系统",
+	"appCaption":"OneNet论谈",
+	"appTitle": "OneNet论谈",
 	"apiBaseUrl": "https://localhost:44300"
 }
